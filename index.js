@@ -1,0 +1,42 @@
+const DEFAULT_NUMBER_OF_ROUNDS = 10;
+const highestNumber = 6;
+
+function generateRandomNumber() {
+  const randomNumber = Math.random() * highestNumber
+  //console.log('Random number is', randomNumber);
+  return Math.ceil(randomNumber);
+}
+
+function markMinMaxNumber(currentNumber) {
+  if (currentNumber === 1) {
+    return '#'
+  } else if (currentNumber === 6) {
+    return '*'
+  } else return ''
+}
+
+function getNumberOfRounds() {
+  const rounds = document.getElementById("numberOfRounds");
+  if (rounds && rounds.value) {
+    return Number(rounds.value);
+  } else return DEFAULT_NUMBER_OF_ROUNDS;
+}
+
+
+function getResults() {
+  const numberOfRoundsToPlay = getNumberOfRounds();
+
+  console.log(new Date().toISOString(), 'Rolling the dice');
+  let resultNumbers = '';
+  let sum = 0;
+  let currentNumber = 0;
+  for (let counter = 0; counter < numberOfRoundsToPlay; counter++) {
+    currentNumber = generateRandomNumber();
+    resultNumbers += currentNumber + markMinMaxNumber(currentNumber) + (counter < numberOfRoundsToPlay - 1 ? '---' : '')
+    sum += currentNumber
+  }
+
+  document.getElementById('result').innerHTML = 'Die gewürfelten Zahlen sind <br>' + resultNumbers + '<br>Die Summe der Zahlen ist: ' + sum;
+  console.log(new Date().toISOString(), 'Finished Rolling the dice');
+
+}
