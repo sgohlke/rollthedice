@@ -1,5 +1,6 @@
 const DEFAULT_NUMBER_OF_ROUNDS = 10;
 const highestNumber = 6;
+const slimMode= true;
 
 function generateRandomNumber() {
   const randomNumber = Math.random() * highestNumber
@@ -9,9 +10,9 @@ function generateRandomNumber() {
 
 function markMinMaxNumber(currentNumber) {
   if (currentNumber === 1) {
-    return '#'
+    return slimMode ? '' : '#'
   } else if (currentNumber === 6) {
-    return '*'
+    return slimMode ? '' : '*'
   } else return ''
 }
 
@@ -32,7 +33,7 @@ function getResults() {
   let currentNumber = 0;
   for (let counter = 0; counter < numberOfRoundsToPlay; counter++) {
     currentNumber = generateRandomNumber();
-    resultNumbers += currentNumber + markMinMaxNumber(currentNumber) + (counter < numberOfRoundsToPlay - 1 ? '---' : '')
+    resultNumbers += currentNumber + markMinMaxNumber(currentNumber) + (!slimMode && counter < numberOfRoundsToPlay - 1 ? '---' : ' ')
     sum += currentNumber
   }
 
@@ -40,3 +41,6 @@ function getResults() {
   console.log(new Date().toISOString(), 'Finished Rolling the dice');
 
 }
+
+// Use this on JSFiddle to add click event listener
+document.getElementById('rollButton').addEventListener('click', getResults)
