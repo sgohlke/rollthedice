@@ -26,6 +26,7 @@ function getNumberOfRounds() {
 
 function getResults() {
   const numberOfRoundsToPlay = getNumberOfRounds();
+  document.getElementById('result').innerHTML = ''
 
   console.log(new Date().toISOString(), 'Rolling the dice');
   let resultNumbers = '';
@@ -34,13 +35,14 @@ function getResults() {
   for (let counter = 0; counter < numberOfRoundsToPlay; counter++) {
     currentNumber = generateRandomNumber();
     resultNumbers += currentNumber + markMinMaxNumber(currentNumber) + (!slimMode && counter < numberOfRoundsToPlay - 1 ? '---' : ' ')
+    document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + resultNumbers
     sum += currentNumber
   }
 
-  document.getElementById('result').innerHTML = 'Die gewürfelten Zahlen sind <br>' + resultNumbers + '<br>Die Summe der Zahlen ist: ' + sum;
+  //document.getElementById('result').innerHTML = 'Die gewürfelten Zahlen sind <br>' + resultNumbers + '<br>Die Summe der Zahlen ist: ' + sum;
   console.log(new Date().toISOString(), 'Finished Rolling the dice');
 
 }
 
 // Use this on JSFiddle to add click event listener
-document.getElementById('rollButton').addEventListener('click', getResults)
+// document.getElementById('rollButton').addEventListener('click', getResults)
