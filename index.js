@@ -1,6 +1,13 @@
 const DEFAULT_NUMBER_OF_ROUNDS = 10;
 const highestNumber = 6;
 const slimMode= true;
+const bc = new BroadcastChannel("rollDice");
+bc.onmessage = (event) => {
+  if (event && event.data && event.data.rollDice) {
+    console.log(event.data.rollDice);
+    alert(`RollDice was allready called in another tab or windows at ${event.data.rollDice}`)    
+  }
+};
 
 function generateRandomNumber() {
   const randomNumber = Math.random() * highestNumber
@@ -25,21 +32,25 @@ function getNumberOfRounds() {
 
 
 function getResults() {
+
   const numberOfRoundsToPlay = getNumberOfRounds();
   document.getElementById('result').innerHTML = ''
 
-  console.log(new Date().toISOString(), 'Rolling the dice');
+  const runningDateTime = new Date().toISOString()
+  console.log(runningDateTime, 'Rolling the dice');
+  bc.postMessage( {'rollDice': runningDateTime});
+
   let resultNumbers = '';
   let sum = 0;
   let currentNumber = 0;
   for (let counter = 0; counter < numberOfRoundsToPlay; counter++) {
     currentNumber = generateRandomNumber();
     resultNumbers += currentNumber + markMinMaxNumber(currentNumber) + (!slimMode && counter < numberOfRoundsToPlay - 1 ? '---' : ' ')
-    document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + resultNumbers
+    //document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + resultNumbers
     sum += currentNumber
   }
 
-  //document.getElementById('result').innerHTML = 'Die gewürfelten Zahlen sind <br>' + resultNumbers + '<br>Die Summe der Zahlen ist: ' + sum;
+  document.getElementById('result').innerHTML = 'Die gewürfelten Zahlen sind <br>' + resultNumbers + '<br>Die Summe der Zahlen ist: ' + sum;
   console.log(new Date().toISOString(), 'Finished Rolling the dice');
 
 }
